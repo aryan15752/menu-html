@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dynamic Product Filter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    select {
+      font-size: 16px;
+      padding: 8px;
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 300px;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li {
+      padding: 10px;
+      border: 1px solid #ddd;
+      margin-bottom: 8px;
+      border-radius: 4px;
+    }
+    li span.category {
+      font-size: 0.9em;
+      color: #666;
+      margin-left: 8px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h1>Product List</h1>
+
+  <label for="category-select">Filter by category:</label>
+  <select id="category-select">
+    <option value="all">All</option>
+    <option value="electronics">Electronics</option>
+    <option value="clothing">Clothing</option>
+    <option value="books">Books</option>
+  </select>
+
+  <ul id="product-list">
+    <!-- Products will be rendered here -->
+  </ul>
+
+  <script>
+    const products = [
+      { id: 1, name: 'Smartphone', category: 'electronics' },
+      { id: 2, name: 'Laptop', category: 'electronics' },
+      { id: 3, name: 'Jeans', category: 'clothing' },
+      { id: 4, name: 'T-shirt', category: 'clothing' },
+      { id: 5, name: 'Novel: "The Great Gatsby"', category: 'books' },
+      { id: 6, name: 'Science Fiction Book', category: 'books' },
+    ];
+
+    const select = document.getElementById('category-select');
+    const productList = document.getElementById('product-list');
+
+    // Function to render products based on category filter
+    function renderProducts(filterCategory) {
+      productList.innerHTML = '';
+
+      const filteredProducts = filterCategory === 'all'
+        ? products
+        : products.filter(product => product.category === filterCategory);
+
+      if (filteredProducts.length === 0) {
+        productList.innerHTML = '<li>No products found.</li>';
+        return;
+      }
+
+      filteredProducts.forEach(product => {
+        const li = document.createElement('li');
+        li.textContent = product.name;
+
+        const span = document.createElement('span');
+        span.textContent = `(${product.category})`;
+        span.className = 'category';
+
+        li.appendChild(span);
+        productList.appendChild(li);
+      });
+    }
+
+    // Initial render of all products
+    renderProducts('all');
+
+    // Listen for dropdown changes
+    select.addEventListener('change', (e) => {
+      renderProducts(e.target.value);
+    });
+  </script>
+</body>
+</html>
